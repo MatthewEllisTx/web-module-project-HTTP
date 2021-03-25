@@ -39,6 +39,8 @@ const App = (props) => {
   const contextValues = {
     movies,
     setMovies,
+    favoriteMovies,
+    setFavoriteMovies,
   }
 
   return (
@@ -54,13 +56,17 @@ const App = (props) => {
             <FavoriteMovieList favoriteMovies={favoriteMovies}/>
           
             <Switch>
-              <Route path="/movies/edit/:id" component={EditMovieForm} />
+              {/* WARNING! If you use render={ props => ...} then react will say you cannot update a component that has been unmountetn */}
+              <Route path="/movies/edit/:id" render={ props => <EditMovieForm {...props} new={false} />} />
+              {/* <Route path="/movies/edit/:id" component={EditMovieForm} test={'test'}/> */}
 
               <Route path="/movies/:id" component={Movie} />
 
               <Route path="/movies">
                 <MovieList movies={movies}/>
               </Route>
+
+              <Route path='/add-movie' render={ props => <EditMovieForm {...props} new={true} />} />
 
               <Route path="/">
                 <Redirect to="/movies"/>

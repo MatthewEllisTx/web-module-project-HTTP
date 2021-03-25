@@ -7,7 +7,7 @@ import { Context } from '../App'
 
 const Movie = (props) => {
   const { addToFavorites } = props;
-  const { setMovies } = useContext(Context)
+  const { setMovies, favoriteMovies, setFavoriteMovies } = useContext(Context)
   const [movie, setMovie] = useState('');
 
   const { id } = useParams();
@@ -34,6 +34,20 @@ const Movie = (props) => {
       .catch( err => {
         console.log(err.response)
       })
+  }
+
+  function favoriteMovie(){
+    const favMoviesFiltered = favoriteMovies.filter( fav => fav.id !== movie.id)
+    if(favMoviesFiltered.length === favoriteMovies.length){
+      setFavoriteMovies([
+        ...favoriteMovies,
+        movie
+      ])
+    } else {
+      setFavoriteMovies([
+        ...favMoviesFiltered
+      ])
+    }
   }
 
   return(<div className="modal-page col">
@@ -65,7 +79,7 @@ const Movie = (props) => {
             </section>
             
             <section>
-              <span className="m-2 btn btn-dark">Favorite</span>
+              <span className="m-2 btn btn-dark" onClick={favoriteMovie}>Favorite</span>
               <Link to={`/movies/edit/${movie.id}`} className="m-2 btn btn-success">Edit</Link>
               <span className="delete"><input type="button" className="m-2 btn btn-danger" value="Delete" onClick={deleteMovie}/></span>
             </section>

@@ -70,13 +70,14 @@ app.get("/api/movies/:id", (req, res) => {
 });
 
 app.post("/api/movies", (req, res) => {
+  const thisMovieID = movieId;
   if (req.body.title !== undefined) {
     const newMovie = req.body;
     newMovie["id"] = movieId;
     movies.push(newMovie);
   }
   ++movieId;
-  res.status(201).json(movies);
+  res.status(201).json({movies, newID: thisMovieID});
 });
 
 app.put("/api/movies/:id", (req, res) => {
